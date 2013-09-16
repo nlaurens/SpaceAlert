@@ -86,6 +86,8 @@ class Settings:
 
     sound['noise'] = 'white_noise.mp3'
 
+    sound['CSRestored'] = 'communications_restored.mp3'
+
 
 
 # Thread that handles the audioQueue and playback.
@@ -120,6 +122,15 @@ def AudioThread(audioQ):
                         clip.play()
                     time.sleep(.1)
                 clip.stop()
+
+                #Last play the communicatoins restored
+                sound = (Settings.soundsDir + Settings.sound['CSRestored'])
+                clip = mp3play.load(sound)
+                print 'DEBUG playing audio: ' + sound
+                clip.play()
+                while clip.isplaying():
+                    time.sleep(.1)
+
             else:
                 clip = mp3play.load(Settings.soundsDir + sound)
                 print 'DEBUG playing audio: ' + sound
