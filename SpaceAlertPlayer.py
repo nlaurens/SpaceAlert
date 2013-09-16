@@ -1,10 +1,14 @@
+# Requires mp3play (easy_install mp3play from pipy)
 import time
 import sys
+import mp3play
 
 #TODO;
 # Vertaal tabel voor de zones, threats -> text & mp3!
 
 #Split the timeString (mmss) from the EventString (xxx)
+
+
 def splitEvent(event):
     i = 0
     while event[i].isdigit():
@@ -24,26 +28,15 @@ def convertTime(timeStr):
     sys.exit(1)
 
 
-def waitForNextEvent(timeEvent, startTime):
-
-    timer = startTime + timeEvent
-    now = time.time()
-    while now < timer:
-        time.sleep(1)
-        now = time.time()
-        minute, seconds = divmod(now - startTime, 60)
-        print '%02d:%02d' % (minute, seconds)
-    return
-
-
 def processEvent(event):
     if event['type'] == 'PE':
         print 'Phase ends - ' + event['params']
     elif event['type'] == 'AL':
         phase = event['params'][0]
         zone = event['params'][-1]
-        threat = event['params'][1:len(event['params'])-1]
-        print 'Alert - T%d - threat: %s - zone:%s' % (int(phase), threat, zone)
+        threat = event['params'][1:len(event['params']) - 1]
+        event['text'] = 'Alert - T%d - threat: %s - zone:%s' % (int(phase), threat, zone)
+        event['sound'] = r'sounds\alert.mp3'
     elif event['type'] == 'UR':
         print 'Unconfirmed Report - ' + event['params']
     elif event['type'] == 'ID':
@@ -52,10 +45,12 @@ def processEvent(event):
         print 'Data Transfer' + event['params']
     elif event['type'] == 'CS':
         print 'Communications Down' + event['params']
-    return
 
-script = '002AL1STB,110AL2TB,215DT,300DT,310AL3TR,320ID,410PE1,425DT,630ID,720PE2'
+    return event
 
+script = '002AL1STB,005AL2TB,215DT,300DT,310AL3TR,320ID,410PE1,425DT,630ID,720PE2'
+
+filename = r'sounds\alert.mp3'
 
 lijst = script.split(',')
 print script
@@ -92,8 +87,17 @@ for event in eventList:
 eventList = sorted(eventList, key=lambda k: k['time'])
 
 
-# here we go!
+# Run the game!
 startTime = time.time()
 for event in eventList:
-    waitForNextEvent(event['time'], startTime)
-    processEvent(event)
+    timer = startTime + event['time']
+    now = time.time()
+    while now < timer:
+        time.sleep(1)
+        now = time.time()
+        minute, seconds = divmod(now - startTime, 60)
+        print '%02d:%02d' % (minute, seconds)
+    event = processEvent(event)
+    print event['text']
+    mp3 = mp3play.load(event['sound'])
+    mp3.play()
