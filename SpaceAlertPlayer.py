@@ -7,7 +7,85 @@ from threading import Thread
 
 
 #TODO;
-# Vertaal tabel voor de threats -> text & mp3!
+# - add second phase begins (no event is spawned for this. Should be directly
+# after 1st phase ends.).
+# - Communications systems down add the x second timer.. How, the queue only
+# contains a sound file to be played, not for how long..
+
+class Settings:
+    soundsDir = 'sounds/'
+
+    sound = {}
+    messg = {}
+
+    #Alerts
+    sound['AL'] = 'alert.mp3'
+    messg['AL'] = 'Alert'
+
+    # Note the %s is the number of the phase (i.e. 1 to 8)
+    sound['ALP'] = 'time_t_plus_%s.mp3'
+    messg['ALP'] = 'time t+%s'
+
+    sound['ALTT'] = 'threat.mp3'
+    messg['ALTT'] = 'incoming threat'
+    sound['ALTST'] = 'serious_threat.mp3'
+    messg['ALTST'] = 'incoming serious threat'
+    sound['ALTIT'] = 'internal_threat.mp3'
+    messg['ALTIT'] = 'internal threat'
+    sound['ALTSIT'] = 'serious_internal_threat.mp3'
+    messg['ALTSIT'] = 'serious internal threat'
+
+    sound['ALZB'] = 'zone_Blue.mp3'
+    messg['ALZB'] = 'zone blue'
+    sound['ALZR'] = 'zone_Red.mp3'
+    messg['ALZR'] = 'zone red'
+    sound['ALZW'] = 'zone_White.mp3'
+    messg['ALZW'] = 'zone white'
+
+    sound['repeat'] = 'repeat.mp3'
+    messg['repeat'] = 'I repeat:'
+
+    # Phase Events
+    sound['begin'] = 'begin_first_phase.mp3'
+    messg['begin'] = 'Alert! Enemy activity detected. Please begin first phase.'
+
+    sound['PE11M'] = 'first_phase_ends_in_1_minute.mp3'
+    messg['PE11M'] = 'First phase will ends in 1 minute!'
+    sound['PE120S'] = 'first_phase_ends_in_20_seconds.mp3'
+    messg['PE120S'] = 'First phase will end in 20 seconds!'
+    sound['PE1'] = 'first_phase_ends.mp3'
+    messg['PE1'] = 'First phase will end!'
+
+    sound['PE21M'] = 'second_phase_ends_in_1_minute.mp3'
+    messg['PE21M'] = 'Second phase will ends in 1 minute!'
+    sound['PE220S'] = 'second_phase_ends_in_20_seconds.mp3'
+    messg['PE220S'] = 'Second phase will end in 20 seconds!'
+    sound['PE2'] = 'second_phase_ends.mp3'
+    messg['PE2'] = 'Second phase will end!'
+
+    sound['begin_second_phase'] = 'second_phase_begins.mp3'
+    messg['begin_second_phase'] = 'Please begin second phase!'
+
+    #Unconfirmed report
+    sound['UR'] = 'unconfirmed_report.mp3'
+    messg['UR'] = 'Unconfirmed report!'
+
+    #Incoming Data
+    sound['ID'] = 'incoming_data.mp3'
+    messg['ID'] = 'Incoming data!'
+
+    #Data Transfer
+    sound['DT'] = 'data_transfer.mp3'
+    messg['DT'] = 'Data transfer!'
+
+    # Communications System Down (Note! Always start the sound with CS%s-).
+    # It's a dirty hack for making sure the communications don't run to long or
+    # short.
+    sound['CS'] = 'CS%s-communications_down.mp3'
+    messg['CS'] = 'Communications down!'
+
+    sound['noise'] = 'white_noise.mp3'
+
 
 
 # Thread that handles the audioQueue and playback.
@@ -18,11 +96,36 @@ def AudioThread(audioQ):
         #Check if the audio queu needs processing
         if len(audioQ) > 0:
             sound = audioQ.popleft()
-            print 'playing audio: ' + sound
-            clip = mp3play.load('sounds/' + sound + '.mp3')
-            clip.play()
-            while clip.isplaying():
-                time.sleep(.1)
+
+            # Communication Systems Down is a special case:
+            if sound.startswith('CS'):
+                duration = int(sound[2: sound.index('-') ])
+                sound = sound[sound.index('-') + 1:]
+                clip = mp3play.load(Settings.soundsDir + sound)
+                clip.play()
+                timer = time.time() + duration
+
+                # First play the communications down
+                print 'DEBUG playing audio: ' + sound
+                clip.play()
+                while clip.isplaying():
+                    time.sleep(.1)
+
+                # then play the white noise till the timer runs out
+                sound = (Settings.soundsDir + Settings.sound['noise'])
+                clip = mp3play.load(sound)
+                while time.time() < timer:
+                    if not clip.isplaying():
+                        print 'DEBUG playing audio: ' + sound
+                        clip.play()
+                    time.sleep(.1)
+                clip.stop()
+            else:
+                clip = mp3play.load(Settings.soundsDir + sound)
+                print 'DEBUG playing audio: ' + sound
+                clip.play()
+                while clip.isplaying():
+                    time.sleep(.1)
 
 
 # Thread that handles the display of messages and the clock!
@@ -66,36 +169,51 @@ def convertTime(timeStr):
 
 
 def processEvent(event, audioQ, displayQ):
-    if event['type'] == 'PE':
-        print 'TODO Phase ends - ' + event['params']
-    elif event['type'] == 'AL':
+    if event['type'] == 'AL':
         phase = event['params'][0]
         zone = event['params'][-1]
         threat = event['params'][1:len(event['params']) - 1]
-        msg = 'Alert - T%d - threat: %s - zone:%s' % (int(phase), threat, zone)
-        displayQ.append(msg)
-        audioQ.append('alert')
-        audioQ.append('time_t_plus_'+ phase)
-        audioQ.append('threat')
-        audioQ.append('zone_'+ zone)
-        audioQ.append('repeat')
-        audioQ.append('time_t_plus_'+ phase)
-        audioQ.append('threat')
-        audioQ.append('zone_'+ zone)
+
+        # queue all messages:
+        displayQ.append(Settings.messg['AL'] + ' - ' + Settings.messg['ALP'] % (phase) + ' - ' +  Settings.messg['ALT' + threat] + ' - ' + Settings.messg['ALZ' + zone])
+
+        # queue all audio:
+        audioQ.append(Settings.sound['AL'])
+        audioQ.append(Settings.sound['ALP'] % (phase))
+        audioQ.append(Settings.sound['ALT' + threat])
+        audioQ.append(Settings.sound['ALZ' + zone])
+        audioQ.append(Settings.sound['repeat'])
+        audioQ.append(Settings.sound['ALP'] % (phase))
+        audioQ.append(Settings.sound['ALT' + threat])
+        audioQ.append(Settings.sound['ALZ' + zone])
     elif event['type'] == 'UR':
-        print 'TODO Unconfirmed Report - ' + event['params']
-    elif event['type'] == 'ID':
-        print 'TODO Incoming Data' + event['params']
-    elif event['type'] == 'DT':
-        print 'TODO Data Transfer' + event['params']
+        phase = event['params'][0]
+        zone = event['params'][-1]
+        threat = event['params'][1:len(event['params']) - 1]
+
+        # queue all messages:
+        displayQ.append(Settings.messg['UR'] + ' - ' + Settings.messg['ALP'] % (phase) + ' - ' +  Settings.messg['ALT' + threat] + ' - ' + Settings.messg['ALZ' + zone])
+
+        # queue all audio:
+        audioQ.append(Settings.sound['UR'])
+        audioQ.append(Settings.sound['ALP'] % (phase))
+        audioQ.append(Settings.sound['ALT' + threat])
+        audioQ.append(Settings.sound['ALZ' + zone])
+        audioQ.append(Settings.sound['repeat'])
+        audioQ.append(Settings.sound['UR'])
+        audioQ.append(Settings.sound['ALP'] % (phase))
+        audioQ.append(Settings.sound['ALT' + threat])
+        audioQ.append(Settings.sound['ALZ' + zone])
     elif event['type'] == 'CS':
-        print 'TODO Communications Down' + event['params']
+        displayQ.append(Settings.messg['CS'])
+        audioQ.append(Settings.sound['CS'] % (event['params']))
+    else:
+        displayQ.append(Settings.messg[event['type'] + event['params']])
+        audioQ.append(Settings.sound[event['type'] + event['params']])
 
     return event
 
-script = '015AL1STB,100AL2TB,215DT,300DT,310AL3TR,320ID,410PE1,425DT,630ID,720PE2'
-
-filename = r'sounds\alert.mp3'
+script = '010CS5,020DT,040AL3STB,060ID,140PE1,250PE2'
 
 lijst = script.split(',')
 
@@ -106,34 +224,36 @@ for eventStr in lijst:
     event['time'] = convertTime(timeStr)
     event['type'] = eventStr[0:2]
     event['params'] = eventStr[2:]
-    event['sounds'] = []
     eventList.append(event)
 
-#spawn t-1m, t-20s events for end of phase:
+#spawn t-1m, t-20s, phase events for end of phase:
 for event in eventList:
     if event['type'] == 'PE' and event['params'] == '1' or event['params'] == '2':
-        event['time'] = event['time'] - 10  # adjust for the length of the mp3 (10s)
 
         #add the 1 min warning
         tmpEvent = {}
         tmpEvent['time'] = event['time'] - 63
         tmpEvent['type'] = 'PE'
-        tmpEvent['params'] = event['params'] + 'm'
+        tmpEvent['params'] = event['params'] + '1M'
         eventList.append(tmpEvent)
 
         #add the 20s warning
         tmpEvent2 = {}
         tmpEvent2['time'] = event['time'] - 23
         tmpEvent2['type'] = 'PE'
-        tmpEvent2['params'] = event['params'] + 's'
+        tmpEvent2['params'] = event['params'] + '20S'
         eventList.append(tmpEvent2)
+
+        # correct for the length of the mp3 10s and the actual end sound in the
+        # mp3 (3 seconds before end).
+        event['time'] = event['time'] - 7  # adjust for the length of the mp3 (10s)
 
 #Sort the list after the inserts
 eventList = sorted(eventList, key=lambda k: k['time'])
 
 # Initilaize the audio & display queu:
-audioQ = deque(['begin_first_phase'])
-displayQ = deque(['Alert, enemy activity detected! Please begin first phase!'])
+audioQ = deque([])
+displayQ = deque([])
 
 # Spawn the audio thread:
 audioThread = Thread(target = AudioThread, args = (audioQ, ))
@@ -147,17 +267,18 @@ displayThread.start()
 
 # Run the game!
 startTime = time.time()
+audioQ.append(Settings.sound['begin'])
+displayQ.append(Settings.messg['begin'])
+
 for event in eventList:
 
     # Set the timer for the next event.
     timer = startTime + event['time']
-    now = time.time()
 
     # Wait for next event.
-    while now < timer:
+    while time.time() < timer:
         # go easy on the CPU:
         time.sleep(.1)
-        now = time.time()
 
     # Process & run the event
     event = processEvent(event, audioQ, displayQ)
