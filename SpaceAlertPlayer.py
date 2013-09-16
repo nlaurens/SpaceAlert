@@ -7,6 +7,9 @@ from threading import Thread
 from settings import Settings
 
 #TODO;
+# - add ability to read from mission files
+# - add menu to browse through the different mission files and select one to
+# play
 # - add second phase begins (no event is spawned for this. Should be directly
 # after 1st phase ends.).
 # - Refactor audio/display threads to proper state machine's (that just get a
@@ -14,6 +17,8 @@ from settings import Settings
 # - Give audio/display threads access to audio/display queue's
 # - Add the german language pack into the settings and make a 1 line languag
 # eswitch!
+# - make it stop after a mission ends (or give an error if the event queue is
+# empty).
 
 
 # Thread that handles the audioQueue and playback.
