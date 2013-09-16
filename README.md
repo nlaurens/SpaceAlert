@@ -1,6 +1,12 @@
 This is an interpreter for scripted missions of the board game Space Alert
 (Vlaada Chvatil). Made to work with the missions in the little duckling
-expansion. Work in progress!
+expansion.
+
+Rule book, missions, sounds available at:
+
+- http://czechgames.com/en/space-alert/
+- http://boardgamegeek.com/boardgame/38453/space-alert
+- http://boardgamegeek.com/boardgameexpansion/90133/little-duckling-fan-expansion-for-space-alert
 
 #Todo
 
