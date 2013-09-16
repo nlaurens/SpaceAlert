@@ -27,7 +27,7 @@ def AudioThread(audioQ):
 
             # Communication Systems Down is a special case:
             if sound.startswith('CS'):
-                duration = int(sound[2: sound.index('-') ])
+                duration = int(sound[2: sound.index('-')])
                 sound = sound[sound.index('-') + 1:]
                 clip = mp3play.load(Settings.soundsDir + sound)
                 clip.play()
@@ -112,7 +112,7 @@ def processEvent(event, audioQ, displayQ):
         threat = event['params'][1:len(event['params']) - 1]
 
         # queue all messages:
-        displayQ.append(Settings.messg['AL'] + ' - ' + Settings.messg['ALP'] % (phase) + ' - ' +  Settings.messg['ALT' + threat] + ' - ' + Settings.messg['ALZ' + zone])
+        displayQ.append(Settings.messg['AL'] + ' - ' + Settings.messg['ALP'] % (phase) + ' - ' + Settings.messg['ALT' + threat] + ' - ' + Settings.messg['ALZ' + zone])
 
         # queue all audio:
         audioQ.append(Settings.sound['AL'])
@@ -129,7 +129,7 @@ def processEvent(event, audioQ, displayQ):
         threat = event['params'][1:len(event['params']) - 1]
 
         # queue all messages:
-        displayQ.append(Settings.messg['UR'] + ' - ' + Settings.messg['ALP'] % (phase) + ' - ' +  Settings.messg['ALT' + threat] + ' - ' + Settings.messg['ALZ' + zone])
+        displayQ.append(Settings.messg['UR'] + ' - ' + Settings.messg['ALP'] % (phase) + ' - ' + Settings.messg['ALT' + threat] + ' - ' + Settings.messg['ALZ' + zone])
 
         # queue all audio:
         audioQ.append(Settings.sound['UR'])
@@ -193,12 +193,12 @@ audioQ = deque([])
 displayQ = deque([])
 
 # Spawn the audio thread:
-audioThread = Thread(target = AudioThread, args = (audioQ, ))
+audioThread = Thread(target=AudioThread, args=(audioQ, ))
 audioThread.setDaemon(True)
 audioThread.start()
 
 # Spawn the display thread:
-displayThread = Thread(target = DisplayThread, args = (displayQ,))
+displayThread = Thread(target=DisplayThread, args=(displayQ,))
 displayThread.setDaemon(True)
 displayThread.start()
 
