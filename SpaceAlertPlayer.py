@@ -9,8 +9,10 @@ from threading import Thread
 #TODO;
 # - add second phase begins (no event is spawned for this. Should be directly
 # after 1st phase ends.).
-# - Communications systems down add the x second timer.. How, the queue only
-# contains a sound file to be played, not for how long..
+# - Refactor classes to seperate files
+# - Refactor audio/display threads to proper state machine's (that just get a
+# state and decide what to do).
+# - Give audio/display threads access to audio/display queue's
 
 class Settings:
     soundsDir = 'sounds/'
