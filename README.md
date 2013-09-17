@@ -9,6 +9,12 @@ Rule book, missions, sounds available at:
 - http://boardgamegeek.com/boardgame/38453/space-alert
 - http://boardgamegeek.com/boardgameexpansion/90133/little-duckling-fan-expansion-for-space-alert
 
+##Installation
+
+- Unzip files
+- Install requirements (in a Python virtualenv, if you like):
+    `$ pip install -r requirements.txt`
+
 ##Todo
 
 - add ability to read from mission files

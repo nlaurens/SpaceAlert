@@ -1,4 +1,3 @@
-# Requires mp3play (easy_install mp3play from pipy)
 import time
 import sys
 import mp3play
