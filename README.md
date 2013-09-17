@@ -1,3 +1,4 @@
+#Little Duckling Player
 This is an interpreter for scripted missions of the board game Space Alert
 (Vlaada Chvatil). Made to work with the missions in the little duckling
 expansion.
@@ -8,7 +9,7 @@ Rule book, missions, sounds available at:
 - http://boardgamegeek.com/boardgame/38453/space-alert
 - http://boardgamegeek.com/boardgameexpansion/90133/little-duckling-fan-expansion-for-space-alert
 
-#Todo
+##Todo
 
 - add ability to read from mission files
 - add menu to browse through the different mission files and select one to play
@@ -18,7 +19,7 @@ Rule book, missions, sounds available at:
 - Add the german language pack into the settings and make a 1 line languag eswitch!
 - make it stop after a mission ends (or give an error if the event queue is empty).
 
-#Scripted events format
+##Scripted events format
 All events have the following format:
 
 mmss...
@@ -27,14 +28,14 @@ mmss...
 * ss = second the event occurs;
 * ... = the event that happens (can be between 2 and 5 characters).
 
-##Phase events:
+###Phase events:
 PE#
 Time the events ends. Note you get a 1 min warning and 20 second warning before the end of the phase.
 
 * \# = the number of phase that is ending.
 
 
-##Alerts
+###Alerts
 AL#TZ
 
 * \# = the phase the threat enters the game;
@@ -48,18 +49,18 @@ AL#TZ
   * W - White zone;
   * B - Blue zone.
 
-##Unconfirmed Reports 
+###Unconfirmed Reports 
 UR#TZ
 
 See Alerts for parameters.
 
-##Incoming Data
+###Incoming Data
 ID
 
-##Data Transfers
+###Data Transfers
 DT
 
-##Communications System Down 
+###Communications System Down 
 CS#
 
 * \# - Duration of the system downs (in seconds).
