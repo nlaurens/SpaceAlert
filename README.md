@@ -18,6 +18,7 @@ Rule book, missions, sounds available at:
 - Give audio/display threads access to audio/display queue's
 - Add the german language pack into the settings and make a 1 line languag eswitch!
 - make it stop after a mission ends (or give an error if the event queue is empty).
+- Make a build script that compiles the script to a windows binary.
 
 ##Scripted events format
  All events have the following format:
