@@ -11,7 +11,6 @@ Rule book, missions, sounds available at:
 
 ##Installation
 
-- Unzip files
 - Install requirements (in a Python virtualenv, if you like):
     `$ pip install -r requirements.txt`
 
