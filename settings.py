@@ -5,28 +5,28 @@ class Settings:
     messg = {}
 
     #Alerts
-    sound['AL'] = 'alert.mp3'
-    messg['AL'] = 'Alert'
+    sound['alert'] = 'alert.mp3'
+    messg['alert'] = 'Alert'
 
     # Note the %s is the number of the phase (i.e. 1 to 8)
-    sound['ALP'] = 'time_t_plus_%s.mp3'
-    messg['ALP'] = 'time t+%s'
+    sound['time_t'] = 'time_t_plus_%s.mp3'
+    messg['time_t'] = 'time t+%s'
 
-    sound['ALTT'] = 'threat.mp3'
-    messg['ALTT'] = 'incoming threat'
-    sound['ALTST'] = 'serious_threat.mp3'
-    messg['ALTST'] = 'incoming serious threat'
-    sound['ALTIT'] = 'internal_threat.mp3'
-    messg['ALTIT'] = 'internal threat'
-    sound['ALTSIT'] = 'serious_internal_threat.mp3'
-    messg['ALTSIT'] = 'serious internal threat'
+    sound['threat_normal'] = 'threat.mp3'
+    messg['threat_normal'] = 'incoming threat'
+    sound['threat_serious'] = 'serious_threat.mp3'
+    messg['threat_serious'] = 'incoming serious threat'
+    sound['internal_normal'] = 'internal_threat.mp3'
+    messg['internal_normal'] = 'internal threat'
+    sound['internal_serious'] = 'serious_internal_threat.mp3'
+    messg['internal_serious'] = 'serious internal threat'
 
-    sound['ALZB'] = 'zone_Blue.mp3'
-    messg['ALZB'] = 'zone blue'
-    sound['ALZR'] = 'zone_Red.mp3'
-    messg['ALZR'] = 'zone red'
-    sound['ALZW'] = 'zone_White.mp3'
-    messg['ALZW'] = 'zone white'
+    sound['zone_blue'] = 'zone_Blue.mp3'
+    messg['zone_blue'] = 'zone blue'
+    sound['zone_red'] = 'zone_Red.mp3'
+    messg['zone_red'] = 'zone red'
+    sound['zone_white'] = 'zone_White.mp3'
+    messg['zone_white'] = 'zone white'
 
     sound['repeat'] = 'repeat.mp3'
     messg['repeat'] = 'I repeat:'
@@ -35,19 +35,19 @@ class Settings:
     sound['begin'] = 'begin_first_phase.mp3'
     messg['begin'] = 'Alert! Enemy activity detected. Please begin first phase.'
 
-    sound['PE11M'] = 'first_phase_ends_in_1_minute.mp3'
-    messg['PE11M'] = 'First phase will ends in 1 minute!'
-    sound['PE120S'] = 'first_phase_ends_in_20_seconds.mp3'
-    messg['PE120S'] = 'First phase will end in 20 seconds!'
-    sound['PE1'] = 'first_phase_ends.mp3'
-    messg['PE1'] = 'First phase will end!'
+    sound['phase_1_ends_in_1min'] = 'first_phase_ends_in_1_minute.mp3'
+    messg['phase_1_ends_in_1min'] = 'First phase will ends in 1 minute!'
+    sound['phase_1_ends_in_20s'] = 'first_phase_ends_in_20_seconds.mp3'
+    messg['phase_1_ends_in_20s'] = 'First phase will end in 20 seconds!'
+    sound['phase_1_ends_in_now'] = 'first_phase_ends.mp3'
+    messg['phase_1_ends_in_now'] = 'First phase will end!'
 
-    sound['PE21M'] = 'second_phase_ends_in_1_minute.mp3'
-    messg['PE21M'] = 'Second phase will ends in 1 minute!'
-    sound['PE220S'] = 'second_phase_ends_in_20_seconds.mp3'
-    messg['PE220S'] = 'Second phase will end in 20 seconds!'
-    sound['PE2'] = 'second_phase_ends.mp3'
-    messg['PE2'] = 'Second phase will end!'
+    sound['phase_2_ends_in_1min'] = 'second_phase_ends_in_1_minute.mp3'
+    messg['phase_2_ends_in_1min'] = 'Second phase will ends in 1 minute!'
+    sound['phase_2_ends_in_20s'] = 'second_phase_ends_in_20_seconds.mp3'
+    messg['phase_2_ends_in_20s'] = 'Second phase will end in 20 seconds!'
+    sound['phase_2_ends_in_now'] = 'second_phase_ends.mp3'
+    messg['phase_2_ends_in_now'] = 'Second phase will end!'
 
     sound['begin_second_phase'] = 'second_phase_begins.mp3'
     messg['begin_second_phase'] = 'Please begin second phase!'
@@ -57,19 +57,16 @@ class Settings:
     messg['UR'] = 'Unconfirmed report!'
 
     #Incoming Data
-    sound['ID'] = 'incoming_data.mp3'
-    messg['ID'] = 'Incoming data!'
+    sound['incoming_data'] = 'incoming_data.mp3'
+    messg['incoming_data'] = 'Incoming data!'
 
     #Data Transfer
-    sound['DT'] = 'data_transfer.mp3'
-    messg['DT'] = 'Data transfer!'
+    sound['data_transfer'] = 'data_transfer.mp3'
+    messg['data_transfer'] = 'Data transfer!'
 
-    # Communications System Down (Note! Always start the sound with CS%s-).
-    # It's a dirty hack for making sure the communications don't run to long or
-    # short.
-    sound['CS'] = 'CS%s-communications_down.mp3'
-    messg['CS'] = 'Communications down!'
-
+    sound['communication_systems_down'] = 'communications_down.mp3'
+    messg['communication_systems_down'] = 'Communications down!'
     sound['noise'] = 'white_noise.mp3'
 
-    sound['CSRestored'] = 'communications_restored.mp3'
+    sound['communication_systems_restored'] = 'communications_restored.mp3'
+    messg['communication_systems_restored'] = 'Communications restored!'
