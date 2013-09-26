@@ -41,11 +41,11 @@ class alert(event):
             messg = ''
 
         messg = messg + Settings.messg['alert']
-        messg = messg + ' - '
+        messg += ' - '
         messg = messg + Settings.messg['time_t'] % self.turn
-        messg = messg + ' - '
+        messg += ' - '
         messg = messg + Settings.messg[self.threat]
-        messg = messg + ' - '
+        messg += ' - '
         messg = messg + Settings.messg[self.zone]
         return messg
 
