@@ -28,7 +28,6 @@ eventList.append((90, event.alert(1, 'threat_serious', 'zone_white')))
 eventList.append((105, event.dataTransfer()))
 eventList.append((125, event.incomingData()))
 
-
 # Start the game NOW:
 startTime = time.time()
 
