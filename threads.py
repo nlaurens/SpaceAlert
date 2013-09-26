@@ -1,10 +1,6 @@
 import time
 import mp3play
 from settings import Settings
-import mp3play
-from collections import deque
-from threading import Thread
-from settings import Settings
 
 
 # Thread that handles the display of messages and the clock!

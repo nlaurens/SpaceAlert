@@ -6,14 +6,14 @@ from threading import Thread
 from settings import Settings
 
 
-class ducklingScriptParser(script):
+class DucklingScriptParser(script):
 
     #Split the timeString (mmss) from the EventString (xxx)
     def splitEvent(event):
         i = 0
         while event[i].isdigit():
-            i = i + 1
-        return (event[0:i], event[i:])
+            i += 1
+        return event[0:i], event[i:]
 
 
     #Returns the time
@@ -27,6 +27,8 @@ class ducklingScriptParser(script):
         print 'Error in time of timeStr: ' + timeStr
         sys.exit(1)
 
+
+#TODO Remove this from the init and make a proper function that parses the script and returns the list (init returning value is v dirty)
     def __init__(self, script):
         lijst = script.split(',')
 
@@ -59,9 +61,9 @@ class ducklingScriptParser(script):
 
                 # correct for the length of the mp3 10s and the actual end sound in the
                 # mp3 (3 seconds before end).
-                event['time'] = event['time'] - 7  # adjust for the length of the mp3 (10s)
+                event['time'] -= 7# adjust for the length of the mp3 (10s)
 
-#ADD THE START GAME EVENT CLASS to LIST
+            #ADD THE START GAME EVENT CLASS to LIST
 
 #Sort the list after the inserts
         eventList = sorted(eventList, key=lambda k: k['time'])

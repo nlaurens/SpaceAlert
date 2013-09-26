@@ -1,4 +1,7 @@
 class Settings:
+    def __init__(self):
+        pass
+
     soundsDir = 'sounds/'
 
     sound = {}
