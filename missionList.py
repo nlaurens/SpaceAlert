@@ -9,18 +9,25 @@ class missionList():
         #TMP solution, should be replaced with all .cfg files from 'mission' dir.
         self.missionConfigs = ['duckling.cfg']
 
-    def parseConfigFiles(self):
-        missionList = []
+        self.loadMissionFiles()
+
+    def loadMissionFiles(self):
+        chapter = {}
 
         config = ConfigParser.RawConfigParser()
         config.read('missions/duckling.cfg')
 
         for section in config.sections():
             options = config.options(section)
-            missions = []
+            mission = {}
             for option in options:
-                missions.append({option: config.get(section, option)})
-            missionList.append({section: missions})
+                mission[option] = config.get(section, option)
+
+            chapter[section] = mission
 
         #TODO: CHECK IF ALL MISSIONS ARE PLAYBLE.
-        return missionList
+        self.chapter = chapter
+
+    def getChapters(self):
+        for chapter, missions in self.chapter.iteritems():
+            print chapter
