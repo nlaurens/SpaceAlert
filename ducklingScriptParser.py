@@ -4,16 +4,35 @@ import event
 
 class ducklingScriptParser():
     #Split the timeString (mmss) from the EventString (xxx)
-    def splitEvent(self, event):
+    """
+
+    """
+
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def splitEvent(strEvent):
+        """
+
+        @param strEvent:
+        @return:
+        """
         i = 0
-        while event[i].isdigit():
+        while strEvent[i].isdigit():
             i += 1
-        return event[0:i], event[i:]
+        return strEvent[0:i], strEvent[i:]
 
 
     #Returns the time
-    def convertTime(self, timeStr):
+    @staticmethod
+    def convertTime(timeStr):
 
+        """
+
+        @param timeStr:
+        @return:
+        """
         if len(timeStr) == 3:
             return int(timeStr[0]) * 60 + int(timeStr[1:3])
         elif len(timeStr) == 4:
@@ -22,7 +41,13 @@ class ducklingScriptParser():
         print 'Error in time of timeStr: ' + timeStr
         sys.exit(1)
 
-    def strThreatToEventThreat(self, strThreat):
+    @staticmethod
+    def strThreatToEventThreat(strThreat):
+        """
+
+        @param strThreat:
+        @return:
+        """
         if strThreat == 'T':
             return 'threat_normal'
         elif strThreat == 'ST':
@@ -35,7 +60,13 @@ class ducklingScriptParser():
             print "ERROR unkown threat code, make it a proper exception!"
             print "threatstr: " + strThreat
 
-    def strZonetoEventZone(self, strZone):
+    @staticmethod
+    def strZonetoEventZone(strZone):
+        """
+
+        @param strZone:
+        @return:
+        """
         if strZone == 'R':
             return 'zone_red'
         elif strZone == 'W':
@@ -47,6 +78,11 @@ class ducklingScriptParser():
             print "threatstr: " + strZone
 
     def parseEventStr(self, eventStr):
+        """
+
+        @param eventStr:
+        @return:
+        """
         eventList = []
         (timeStr, eventStr) = self.splitEvent(eventStr)
         time = self.convertTime(timeStr)
@@ -82,10 +118,14 @@ class ducklingScriptParser():
         return eventList
 
     def convertScript(self, script):
+        """
+
+        @param script:
+        @return:
+        """
         lijst = script.split(',')
 
-        eventList = []
-        eventList.append((0, event.start()))
+        eventList = [(0, event.start())]
         for eventStr in lijst:
             events = self.parseEventStr(eventStr)
             eventList.extend(events)

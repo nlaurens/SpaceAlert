@@ -6,15 +6,20 @@ import threads
 
 def main():
     #load all chapters and missions
+    """
+
+
+    @return:
+    """
     from missionList import missionList
     missionList = missionList()
 
     #run the menu to make a selection from the available missions
     from SpaceAlertMenu import SpaceAlertMenu
-    menu = SpaceAlertMenu()
-    chapter, mission = menu.main(missionList)
+    menu = SpaceAlertMenu(missionList)
+    chapter, mission = menu.main()
 
-    if chapter == None and mission == None:
+    if chapter is None and mission is None:
         return False
     else:
         script = missionList.getScript(chapter, mission)
@@ -24,6 +29,10 @@ def main():
 def runGame(script):
 
     # Initilaize the audio, display, and communiquation queu:
+    """
+
+    @param script:
+    """
     audioQ = deque([])
     displayQ = deque([])
     threadCommunicationQ = deque ([])

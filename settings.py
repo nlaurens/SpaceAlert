@@ -1,4 +1,8 @@
 class Settings:
+    """
+    Class that contains all the variables to the mp3's and messages. Allows for easy swtchint between language's and fixing of typo's
+    """
+
     def __init__(self):
         pass
 
