@@ -3,6 +3,10 @@ import ConfigParser
 
 class missionList():
 
+    """
+
+    """
+
     def __init__(self):
         self.chapter = {}
         #TODO
@@ -10,15 +14,19 @@ class missionList():
         #TMP solution, should be replaced with all .cfg files from 'mission' dir.
         missionConfigs = ['duckling.cfg', 'LittleDuckling.cfg']
 
-        for file in missionConfigs:
-            self.parseConfigFile('missions/'+file)
+        for configFile in missionConfigs:
+            self.parseConfigFile('missions/'+configFile)
 
         #TODO: CHECK IF ALL MISSIONS ARE PLAYBLE.
 
-    def parseConfigFile(self, file):
+    def parseConfigFile(self, configFile):
+        """
+
+        @param configFile:
+        """
         chapter = {}
         config = ConfigParser.RawConfigParser()
-        config.read(file)
+        config.read(configFile)
 
         for section in config.sections():
             options = config.options(section)
@@ -31,6 +39,11 @@ class missionList():
         self.chapter.update(chapter)
 
     def getChapters(self):
+        """
+
+
+        @return:
+        """
         chapterList = []
         for chapter, missions in self.chapter.iteritems():
             chapterList.append(chapter)
@@ -39,12 +52,23 @@ class missionList():
         return chapterList
 
     def getMissions(self, chapter):
-        missionList = []
-        for mission, missionScript in self.chapter[chapter].iteritems():
-            missionList.append(mission)
+        """
 
-        missionList.sort()
-        return missionList
+        @param chapter:
+        @return:
+        """
+        missions = []
+        for mission, missionScript in self.chapter[chapter].iteritems():
+            missions.append(mission)
+
+        missions.sort()
+        return missions
 
     def getScript(self, chapter, mission):
+        """
+
+        @param chapter:
+        @param mission:
+        @return:
+        """
         return self.chapter[chapter][mission]
