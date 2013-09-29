@@ -43,14 +43,16 @@ class Settings:
     sound['phase_1_ends_in_20s'] = 'first_phase_ends_in_20_seconds.mp3'
     messg['phase_1_ends_in_20s'] = 'First phase will end in 20 seconds!'
     sound['phase_1_ends_in_now'] = 'first_phase_ends.mp3'
-    messg['phase_1_ends_in_now'] = 'First phase has ended!'
+    messg['phase_1_ends_in_now'] = 'First phase will end!'
+    messg['phase_1_has_ended'] = 'First phase has ended!'
 
     sound['phase_2_ends_in_1min'] = 'second_phase_ends_in_1_minute.mp3'
     messg['phase_2_ends_in_1min'] = 'Second phase will ends in 1 minute!'
     sound['phase_2_ends_in_20s'] = 'second_phase_ends_in_20_seconds.mp3'
     messg['phase_2_ends_in_20s'] = 'Second phase will end in 20 seconds!'
     sound['phase_2_ends_in_now'] = 'second_phase_ends.mp3'
-    messg['phase_2_ends_in_now'] = 'Second phase has ended!'
+    messg['phase_2_ends_in_now'] = 'Second phase will end!'
+    messg['phase_2_has_ended'] = 'Second phase has ended!'
 
     sound['begin_second_phase'] = 'second_phase_begins.mp3'
     messg['begin_second_phase'] = 'Please begin second phase!'
@@ -61,8 +63,8 @@ class Settings:
     sound['operation_ends_in_20s'] = 'operation_ends_in_20_seconds.mp3'
     messg['operation_ends_in_20s'] = 'Operation will end in 20 seconds!'
     sound['operation_ends_in_now'] = 'operation_ends.mp3'
-    messg['operation_ends_in_now'] = 'Operation has Ended!'
-
+    messg['operation_ends_in_now'] = 'Operation will End!'
+    messg['operat_has_ended'] = 'Operation has ended!'
 
     #Unconfirmed report
     sound['UR'] = 'unconfirmed_report.mp3'

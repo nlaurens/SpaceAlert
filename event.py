@@ -24,7 +24,7 @@ class start(event):
 class phaseEnds(event):
     def __init__(self, phaseNumber, warning):
         self.warning = warning
-        self.getPhaseNumber = phaseNumber
+        self.phaseNumber = phaseNumber
         self.settingsTag = 'phase_' + str(phaseNumber) + '_ends_in_' + warning
 
     def getPhaseNumber(self):
@@ -33,6 +33,20 @@ class phaseEnds(event):
     def convertToEndMission(self):
         import re
         self.settingsTag = re.sub(r'phase_[0-9]_', "operation_", self.settingsTag)
+        self.missionEnds = True
+
+    def execute(self):
+        if self.warning == 'now':
+           self.audioQ.append( (Settings.sound[self.settingsTag], -1, self.executeHasEnded) )
+           self.displayQ.append ( (Settings.messg[self.settingsTag], None) )
+        else:
+            self.audioQ.append( (Settings.sound[self.settingsTag], -1, None) )
+            self.displayQ.append ( (Settings.messg[self.settingsTag], None) )
+
+    def executeHasEnded(self):
+        import re
+        self.settingsTag = re.sub(r'ends_in_now', "has_ended", self.settingsTag)
+        self.displayQ.append ( (Settings.messg[self.settingsTag], None) )
 
 class alert(event):
 
