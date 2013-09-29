@@ -5,56 +5,74 @@ from settings import Settings
 import event
 import threads
 
-# load duckling script
-script = '010CS5,020DT,040AL3STB,060ID,140PE1,250PE2'
+def main():
+    #load all chapters and missions
+    from missionList import missionList
+    missionList = missionList()
 
-# Initilaize the audio & display queu:
-audioQ = deque([])
-displayQ = deque([])
+    #run the menu to make a selection from the available missions
+    from SpaceAlertMenu import SpaceAlertMenu
+    menu = SpaceAlertMenu()
+    chapter, mission = menu.main(missionList)
 
-#parse the duckling script
-#eventList = ducklingScriptParser(script)
+    if chapter == None and mission == None:
+        return False
+    else:
+        script = missionList.getScript(chapter, mission)
+        runGame(script)
+        return True
 
-#Simple testing mission:
-eventList = []
+def runGame(script):
+    global audioQ, displayQ, eventList, startTime, audioThread, displayThread, timeEvent, event, timer
 
-eventList.append((0, event.start()))
-eventList.append((10, event.alert(1, 'threat_normal', 'zone_red')))
-eventList.append((25, event.phaseEnds(1, '1min')))
-eventList.append((40, event.communicationSystemsDown(5)))
-eventList.append((55, event.phaseEnds(1, '20s')))
-eventList.append((75 - 7, event.phaseEnds(1, 'now')))
-eventList.append((90, event.alert(1, 'threat_serious', 'zone_white')))
-eventList.append((105, event.dataTransfer()))
-eventList.append((125, event.incomingData()))
+    # Initilaize the audio & display queu:
+    audioQ = deque([])
+    displayQ = deque([])
 
-# Start the game NOW:
-startTime = time.time()
+    #parse the duckling script
+    eventList = ducklingScriptParser(script)
+    #Simple testing mission:
+    eventList = []
+    eventList.append((0, event.start()))
+    eventList.append((10, event.alert(1, 'threat_normal', 'zone_red')))
+    eventList.append((25, event.phaseEnds(1, '1min')))
+    eventList.append((40, event.communicationSystemsDown(5)))
+    eventList.append((55, event.phaseEnds(1, '20s')))
+    eventList.append((75 - 7, event.phaseEnds(1, 'now')))
+    eventList.append((90, event.alert(1, 'threat_serious', 'zone_white')))
+    eventList.append((105, event.dataTransfer()))
+    eventList.append((125, event.incomingData()))
 
-# Spawn the audio thread:
-audioThread = Thread(target=threads.AudioThread, args=(audioQ,))
-audioThread.setDaemon(True)
-audioThread.start()
+    # Start the game NOW:
+    startTime = time.time()
 
-# Spawn the display thread:
-displayThread = Thread(target=threads.DisplayThread, args=(displayQ, startTime))
-displayThread.setDaemon(True)
-displayThread.start()
+    # Spawn the audio thread:
+    audioThread = Thread(target=threads.AudioThread, args=(audioQ,))
+    audioThread.setDaemon(True)
+    audioThread.start()
 
-for timeEvent, event in eventList:
+    # Spawn the display thread:
+    displayThread = Thread(target=threads.DisplayThread, args=(displayQ, startTime))
+    displayThread.setDaemon(True)
+    displayThread.start()
 
-    # Set the timer for the next event.
-    timer = startTime + timeEvent
+    for timeEvent, event in eventList:
 
-    # Wait for next event.
-    while time.time() < timer:
-        # go easy on the CPU:
-        time.sleep(.1)
+        # Set the timer for the next event.
+        timer = startTime + timeEvent
 
-    # Add the que's to the event and run the event
-    event.setQs(audioQ, displayQ)
-    event.execute()
+        # Wait for next event.
+        while time.time() < timer:
+            # go easy on the CPU:
+            time.sleep(.1)
 
-while True:
-    time.sleep(2)
-    print 'todo: ending a mission'
+        # Add the que's to the event and run the event
+        event.setQs(audioQ, displayQ)
+
+if __name__ == "__main__":
+    #play the main until it quits
+    play = True
+    while play:
+        play = main()
+
+    print "Byebye space cadet!"

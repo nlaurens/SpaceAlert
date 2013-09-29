@@ -75,3 +75,10 @@ Rule book, missions, sounds available at:
  CS#
  
  * \# - Duration of the system downs (in seconds).
+
+## Mission config files
+
+The 2.7 python reader for config files does not keep the order in the config
+file when parsing. Therefore the missions in each chapter are sorted by
+alphabetical order in the parser. It is thus highly recommended to keep a name
+convention such as "mission1", "missoin2" etc.

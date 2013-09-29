@@ -1,45 +1,41 @@
 class SpaceAlertMenu():
-    def quit(self):
-        print 'Byebye Space Cadette!'
-        exit()
+
+    def subMenu(self, menuItems, menuText):
+        i = 1
+        for option in menuItems:
+            menuText += str(i) + ") " + option + "\n"
+            i += 1
+
+        menuText += "0) Back"
+        while True:
+            print menuText
+            selection = raw_input("Make your choice: ")
+            if selection.isdigit():
+                selection = int(selection)
+                if selection == 0:
+                    return
+                elif 0 < selection < i:
+                    return menuItems[selection - 1]
+
+            self.noAction()
 
     def selectChapter(self):
-        chapterMenuText = "Select a chapter to play:\n"
-        i = 1
-        chapters = self.missionList.getChapters()
-        for chapter in chapters:
-            chapterMenuText += str(i) + ") " + chapter + "\n"
-            i += 1
-
-        while True:
-            print chapterMenuText
-            selection = raw_input("Select chapter: ")
-            selection = int(selection)
-            if 0 < selection < i:
-                return chapters[selection - 1]
+        menuText = "Select a chapter to play:\n"
+        menuOptions = self.missionList.getChapters()
+        chapter = self.subMenu(menuOptions, menuText)
+        return chapter
 
     def selectMission(self, chapter):
-        missionMenuText = "Select a mission to play:\n"
-        i = 1
+        menuText = "Select a mission to play:\n"
         missions = self.missionList.getMissions(chapter)
-        for mission in missions:
-            missionMenuText += str(i) + ") " + mission + "\n"
-            i += 1
-
-        while True:
-            print missionMenuText
-            selection = raw_input("Select mission: ")
-            selection = int(selection)
-            if 0 < selection < i:
-                return missions[selection - 1]
-
+        mission = self.subMenu(missions, menuText)
+        return mission
 
     def noAction(self):
         print 'Say what Cadette?'
 
-    def main(self):
-        from missionList import missionList
-        self.missionList = missionList()
+    def main(self, missionList):
+        self.missionList = missionList
 
         mainMenuText = "\n Main Menu.\n (s)elect chapter\n (q)uit"
 
@@ -47,11 +43,14 @@ class SpaceAlertMenu():
             print mainMenuText
             selection = raw_input("Your selection: ")
             if selection == "q":
-                self.quit()
+                return None, None
             elif selection == "s":
                 chapter = self.selectChapter()
-                mission = self.selectMission(chapter)
-                return chapter, mission
+                if chapter != None:
+                    mission = self.selectMission(chapter)
+                    if mission != None:
+                        return chapter, mission
+
 
 if __name__ == "__main__":
     SA = SpaceAlertMenu()

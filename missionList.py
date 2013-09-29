@@ -33,11 +33,16 @@ class missionList():
         for chapter, missions in self.chapter.iteritems():
             chapterList.append(chapter)
 
+        chapterList.sort()
         return chapterList
 
     def getMissions(self, chapter):
         missionList = []
         for mission, missionScript in self.chapter[chapter].iteritems():
             missionList.append(mission)
+
+        missionList.sort()
         return missionList
 
+    def getScript(self, chapter, mission):
+        return self.chapter[chapter][mission]
