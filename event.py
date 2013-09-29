@@ -23,7 +23,16 @@ class start(event):
 
 class phaseEnds(event):
     def __init__(self, phaseNumber, warning):
+        self.warning = warning
+        self.getPhaseNumber = phaseNumber
         self.settingsTag = 'phase_' + str(phaseNumber) + '_ends_in_' + warning
+
+    def getPhaseNumber(self):
+        return self.phaseNumber
+
+    def convertToEndMission(self):
+        import re
+        self.settingsTag = re.sub(r'phase_[0-9]_', "operation_", self.settingsTag)
 
 class alert(event):
 
