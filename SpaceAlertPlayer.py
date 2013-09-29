@@ -2,8 +2,6 @@ import time
 from collections import deque
 from threading import Thread
 from ducklingScriptParser import ducklingScriptParser
-from settings import Settings
-import event
 import threads
 
 def main():
@@ -25,9 +23,10 @@ def main():
 
 def runGame(script):
 
-    # Initilaize the audio & display queu:
+    # Initilaize the audio, display, and communiquation queu:
     audioQ = deque([])
     displayQ = deque([])
+    threadCommunicationQ = deque ([])
 
     #parse the duckling script
     eventList = ducklingScriptParser().convertScript(script)
@@ -36,17 +35,16 @@ def runGame(script):
     startTime = time.time()
 
     # Spawn the audio thread:
-    audioThread = Thread(target=threads.AudioThread, args=(audioQ,))
+    audioThread = Thread(target=threads.AudioThread, args=(audioQ,threadCommunicationQ))
     audioThread.setDaemon(True)
     audioThread.start()
 
     # Spawn the display thread:
-    displayThread = Thread(target=threads.DisplayThread, args=(displayQ, startTime))
+    displayThread = Thread(target=threads.DisplayThread, args=(displayQ, startTime,threadCommunicationQ))
     displayThread.setDaemon(True)
     displayThread.start()
 
     for timeEvent, event in eventList:
-
         # Set the timer for the next event.
         timer = startTime + timeEvent
 
@@ -59,12 +57,14 @@ def runGame(script):
         event.setQs(audioQ, displayQ)
         event.execute()
 
-    #Allow the mission to finish up.
-    # TODO: display complete overview of what happened so players can check when resolving game.
-    print "MISSION FINISHED!"
-    for i in range(0,10):
-        print '.'
-        time.sleep(0.5)
+    #Give the mp3s 15 seconds to finish playing
+    time.sleep(20)
+
+    #Signal the Thread to end, and wait for it.
+    threadCommunicationQ.append('AUDIO-STOP')
+    threadCommunicationQ.append('DISPLAY-STOP')
+    audioThread.join()
+    displayThread.join()
 
 if __name__ == "__main__":
     #play the main until it quits
