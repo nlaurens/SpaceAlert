@@ -57,6 +57,9 @@ def runGame(script):
         event.setQs(audioQ, displayQ)
         event.execute()
 
+    #Give the mp3s 15 seconds to finish playing
+    time.sleep(20)
+
     #Signal the Thread to end, and wait for it.
     threadCommunicationQ.append('AUDIO-STOP')
     threadCommunicationQ.append('DISPLAY-STOP')
