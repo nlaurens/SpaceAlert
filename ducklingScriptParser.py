@@ -1,13 +1,8 @@
-import time
 import sys
-import mp3play
-from collections import deque
-from threading import Thread
-from settings import Settings
+import event
 
 
 class ducklingScriptParser():
-
     #Split the timeString (mmss) from the EventString (xxx)
     def splitEvent(self, event):
         i = 0
@@ -27,44 +22,74 @@ class ducklingScriptParser():
         print 'Error in time of timeStr: ' + timeStr
         sys.exit(1)
 
+    def strThreatToEventThreat(self, strThreat):
+        if strThreat == 'T':
+            return 'threat_normal'
+        elif strThreat == 'ST':
+            return 'threat_serious'
+        elif strThreat == 'IT':
+            return 'internal_normal'
+        elif strThreat == 'SIT':
+            return 'internal_serious'
+        else:
+            print "ERROR unkown threat code, make it a proper exception!"
+            print "threatstr: " + strThreat
+
+    def strZonetoEventZone(self, strZone):
+        if strZone == 'R':
+            return 'zone_red'
+        elif strZone == 'W':
+            return 'zone_white'
+        elif strZone == 'B':
+            return 'zone_blue'
+        else:
+            print "ERROR unkown zone code, make it a proper exception!"
+            print "threatstr: " + strZone
+
+    def parseEventStr(self, eventStr):
+        eventList = []
+        (timeStr, eventStr) = self.splitEvent(eventStr)
+        time = self.convertTime(timeStr)
+        strType  = eventStr[0:2]
+        strParams = eventStr[2:]
+
+        if strType == "PE":
+            eventList.append((time - 60, event.phaseEnds(int(strParams), '1min')))
+            eventList.append((time - 20, event.phaseEnds(int(strParams), '20s')))
+            eventList.append((time - 7, event.phaseEnds(int(strParams), 'now')))
+        elif strType == "AL":
+            turn = int(strParams[0])
+            threat = self.strThreatToEventThreat(strParams[1:len(strParams) - 1])
+            zone = self.strZonetoEventZone(strParams[-1])
+            eventList.append((time, event.alert(turn, threat, zone)))
+            pass
+        elif strType == "UR":
+            turn = int(strParams[0])
+            threat = self.strThreatToEventThreat(strParams[1:len(strParams) - 1])
+            zone = self.strZonetoEventZone(strParams[-1])
+            eventList.append((time, event.alert(turn, threat, zone, True)))
+        elif strType == "ID":
+            eventList.append((time, event.incomingData()))
+        elif strType == "DT":
+            eventList.append((time, event.dataTransfer()))
+        elif strType == "CS":
+            eventList.append((time, event.communicationSystemsDown(int(strParams))))
+        else:
+            print 'error unkown eventtype in script. TODO: make a proper exception from this.'
+            print 'eventtyp: ' + strType
+
+        #return the events
+        return eventList
 
     def convertScript(self, script):
         lijst = script.split(',')
 
         eventList = []
+        eventList.append((0, event.start()))
         for eventStr in lijst:
-            event = {}
-            (timeStr, eventStr) = self.splitEvent(eventStr)
-            event['time'] = self.convertTime(timeStr)
-            event['type'] = eventStr[0:2]
-            event['params'] = eventStr[2:]
-            eventList.append(event)
+            events = self.parseEventStr(eventStr)
+            eventList.extend(events)
 
-#spawn t-1m, t-20s, phase events for end of phase:
-        for event in eventList:
-            if event['type'] == 'PE' and event['params'] == '1' or event['params'] == '2':
-
-                #add the 1 min warning
-                tmpEvent = {}
-                tmpEvent['time'] = event['time'] - 63
-                tmpEvent['type'] = 'PE'
-                tmpEvent['params'] = event['params'] + '1M'
-                eventList.append(tmpEvent)
-
-                #add the 20s warning
-                tmpEvent2 = {}
-                tmpEvent2['time'] = event['time'] - 23
-                tmpEvent2['type'] = 'PE'
-                tmpEvent2['params'] = event['params'] + '20S'
-                eventList.append(tmpEvent2)
-
-                # correct for the length of the mp3 10s and the actual end sound in the
-                # mp3 (3 seconds before end).
-                event['time'] -= 7# adjust for the length of the mp3 (10s)
-
-            #ADD THE START GAME EVENT CLASS to LIST
-
-#Sort the list after the inserts
-        eventList = sorted(eventList, key=lambda k: k['time'])
-
+        #Sort the list on starttime (don't skip, some events spawn multiple events across the timeline
+        #eventList = sorted(eventList, key=lambda k: k['time'])
         return eventList

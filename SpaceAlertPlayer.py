@@ -31,7 +31,6 @@ def runGame(script):
 
     #parse the duckling script
     eventList = ducklingScriptParser().convertScript(script)
-    print eventList
 
     # Start the game NOW:
     startTime = time.time()
@@ -58,8 +57,10 @@ def runGame(script):
 
         # Add the que's to the event and run the event
         event.setQs(audioQ, displayQ)
+        event.execute()
 
-    #TODO remove this dirty hack
+    #Allow the mission to finish up.
+    # TODO: display complete overview of what happened so players can check when resolving game.
     print "MISSION FINISHED!"
     for i in range(0,10):
         print '.'
