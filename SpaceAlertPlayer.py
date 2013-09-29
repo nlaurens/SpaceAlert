@@ -1,6 +1,7 @@
 import time
 from collections import deque
 from threading import Thread
+from ducklingScriptParser import ducklingScriptParser
 from settings import Settings
 import event
 import threads
@@ -23,25 +24,14 @@ def main():
         return True
 
 def runGame(script):
-    global audioQ, displayQ, eventList, startTime, audioThread, displayThread, timeEvent, event, timer
 
     # Initilaize the audio & display queu:
     audioQ = deque([])
     displayQ = deque([])
 
     #parse the duckling script
-    eventList = ducklingScriptParser(script)
-    #Simple testing mission:
-    eventList = []
-    eventList.append((0, event.start()))
-    eventList.append((10, event.alert(1, 'threat_normal', 'zone_red')))
-    eventList.append((25, event.phaseEnds(1, '1min')))
-    eventList.append((40, event.communicationSystemsDown(5)))
-    eventList.append((55, event.phaseEnds(1, '20s')))
-    eventList.append((75 - 7, event.phaseEnds(1, 'now')))
-    eventList.append((90, event.alert(1, 'threat_serious', 'zone_white')))
-    eventList.append((105, event.dataTransfer()))
-    eventList.append((125, event.incomingData()))
+    eventList = ducklingScriptParser().convertScript(script)
+    print eventList
 
     # Start the game NOW:
     startTime = time.time()
@@ -68,6 +58,12 @@ def runGame(script):
 
         # Add the que's to the event and run the event
         event.setQs(audioQ, displayQ)
+
+    #TODO remove this dirty hack
+    print "MISSION FINISHED!"
+    for i in range(0,10):
+        print '.'
+        time.sleep(0.5)
 
 if __name__ == "__main__":
     #play the main until it quits

@@ -6,10 +6,10 @@ from threading import Thread
 from settings import Settings
 
 
-class DucklingScriptParser(script):
+class ducklingScriptParser():
 
     #Split the timeString (mmss) from the EventString (xxx)
-    def splitEvent(event):
+    def splitEvent(self, event):
         i = 0
         while event[i].isdigit():
             i += 1
@@ -17,7 +17,7 @@ class DucklingScriptParser(script):
 
 
     #Returns the time
-    def convertTime(timeStr):
+    def convertTime(self, timeStr):
 
         if len(timeStr) == 3:
             return int(timeStr[0]) * 60 + int(timeStr[1:3])
@@ -28,15 +28,14 @@ class DucklingScriptParser(script):
         sys.exit(1)
 
 
-#TODO Remove this from the init and make a proper function that parses the script and returns the list (init returning value is v dirty)
-    def __init__(self, script):
+    def convertScript(self, script):
         lijst = script.split(',')
 
         eventList = []
         for eventStr in lijst:
             event = {}
-            (timeStr, eventStr) = splitEvent(eventStr)
-            event['time'] = convertTime(timeStr)
+            (timeStr, eventStr) = self.splitEvent(eventStr)
+            event['time'] = self.convertTime(timeStr)
             event['type'] = eventStr[0:2]
             event['params'] = eventStr[2:]
             eventList.append(event)
