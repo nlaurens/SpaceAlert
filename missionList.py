@@ -4,18 +4,21 @@ import ConfigParser
 class missionList():
 
     def __init__(self):
+        self.chapter = {}
         #TODO
         #Scan for all cfg files in the mission dir
         #TMP solution, should be replaced with all .cfg files from 'mission' dir.
-        self.missionConfigs = ['duckling.cfg']
+        missionConfigs = ['duckling.cfg', 'LittleDuckling.cfg']
 
-        self.loadMissionFiles()
+        for file in missionConfigs:
+            self.parseConfigFile('missions/'+file)
 
-    def loadMissionFiles(self):
+        #TODO: CHECK IF ALL MISSIONS ARE PLAYBLE.
+
+    def parseConfigFile(self, file):
         chapter = {}
-
         config = ConfigParser.RawConfigParser()
-        config.read('missions/duckling.cfg')
+        config.read(file)
 
         for section in config.sections():
             options = config.options(section)
@@ -25,8 +28,7 @@ class missionList():
 
             chapter[section] = mission
 
-        #TODO: CHECK IF ALL MISSIONS ARE PLAYBLE.
-        self.chapter = chapter
+        self.chapter.update(chapter)
 
     def getChapters(self):
         chapterList = []
