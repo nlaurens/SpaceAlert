@@ -4,9 +4,10 @@ from settings import Settings
 
 
 # Thread that handles the display of messages and the clock!
-def DisplayThread(displayQ, startTime):
+def DisplayThread(displayQ, startTime, communicationQ):
     secondsPrinted = 0
-    while True:
+    run = True
+    while run:
         time.sleep(.1)
 
         # Check if we need to display the clock:
@@ -24,9 +25,16 @@ def DisplayThread(displayQ, startTime):
             if not callBack is None:
                 callBack()
 
+        #Check for signals in the communication thread
+        if len(communicationQ) >0:
+            for msg in communicationQ:
+                if msg == 'DISPLAY-STOP':
+                    run = False
+
 # Thread that handles the audioQueue and playback.
-def AudioThread(audioQ):
-    while True:
+def AudioThread(audioQ, communicationQ):
+    run = True
+    while run:
         time.sleep(.1)
 
         #Check if the audio queu needs processing
@@ -47,3 +55,9 @@ def AudioThread(audioQ):
 
             if not callBack is None:
                 callBack()
+
+        #Check for signals in the communication thread
+        if len(communicationQ) >0:
+            for msg in communicationQ:
+                if msg == 'AUDIO-STOP':
+                    run = False
