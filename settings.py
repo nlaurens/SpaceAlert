@@ -64,7 +64,7 @@ class Settings:
     messg['operation_ends_in_20s'] = 'Operation will end in 20 seconds!'
     sound['operation_ends_in_now'] = 'operation_ends.mp3'
     messg['operation_ends_in_now'] = 'Operation will End!'
-    messg['operat_has_ended'] = 'Operation has ended!'
+    messg['operation_has_ended'] = 'Operation has ended!'
 
     #Unconfirmed report
     sound['UR'] = 'unconfirmed_report.mp3'
