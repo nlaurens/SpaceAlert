@@ -7,6 +7,12 @@ class Settings:
     sound = {}
     messg = {}
 
+    # Siren
+    sound['siren0'] = 'red_alert_0.mp3'
+    sound['siren1'] = 'red_alert_1.mp3'
+    sound['siren2'] = 'red_alert_2.mp3'
+    sound['siren3'] = 'red_alert_3.mp3'
+
     #Alerts
     sound['alert'] = 'alert.mp3'
     messg['alert'] = 'Alert'
