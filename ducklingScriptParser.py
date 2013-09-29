@@ -93,10 +93,10 @@ class ducklingScriptParser():
         #Replace the last phase ends with mission ends
         lastEvent = eventList[-1][1]
         if isinstance(lastEvent,event.phaseEnds):
-            lastPhaseNumber = lastEvent.getPhaseNumber
+            lastPhaseNumber = lastEvent.getPhaseNumber()
             for time, eventItem in eventList:
                 if isinstance(eventItem, event.phaseEnds):
-                    if eventItem.getPhaseNumber == lastPhaseNumber:
+                    if eventItem.getPhaseNumber() == lastPhaseNumber:
                         eventItem.convertToEndMission()
         else:
             print 'ERROR, the last event is not a phase end!'
