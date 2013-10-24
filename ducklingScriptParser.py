@@ -142,6 +142,4 @@ class ducklingScriptParser():
             print 'ERROR, the last event is not a phase end!'
 
 
-        #Sort the list on starttime (don't skip, some events spawn multiple events across the timeline
-        #eventList = sorted(eventList, key=lambda k: k['time'])
         return eventList
