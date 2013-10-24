@@ -49,6 +49,7 @@ def AudioThread(audioQ, communicationQ):
         # If there is no audio to play, we make some random noise
         if len(audioQ) == 0:
             siren = randomSiren()
+            siren.play()
 
             while len(audioQ) == 0 and siren.isplaying():
                 time.sleep(.1)
