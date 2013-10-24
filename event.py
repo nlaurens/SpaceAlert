@@ -49,7 +49,7 @@ class phaseEnds(event):
         self.warning = warning
         self.phaseNumber = phaseNumber
         self.settingsTag = 'phase_' + str(phaseNumber) + '_ends_in_' + warning
-        self.missionEnds = True
+        self.missionEnds = False
 
     def getPhaseNumber(self):
         """
@@ -66,6 +66,7 @@ class phaseEnds(event):
         """
         import re
         self.settingsTag = re.sub(r'phase_[0-9]_', "operation_", self.settingsTag)
+        self.missionEnds = True
 
     def execute(self):
         """
@@ -87,6 +88,16 @@ class phaseEnds(event):
         import re
         self.settingsTag = re.sub(r'ends_in_now', "has_ended", self.settingsTag)
         self.displayQ.append ( (Settings.messg[self.settingsTag], None) )
+
+        #If it wasn't the mission that was ending, start the next phase:
+        if self.missionEnds != True:
+            if self.phaseNumber  == 1:
+                tag = 'begin_second_phase'
+            else:
+                tag = 'begin_third_phase'
+
+            self.audioQ.append( (Settings.sound[tag], -1, None) )
+            self.displayQ.append ( (Settings.messg[tag], None) )
 
 class alert(event):
 

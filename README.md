@@ -21,7 +21,6 @@ Rule book, missions, sounds available at:
   the real starttime of the event. Not on the time it starts playing (only
   happens when there are events spawning to close for the mp3 to finish playing)
 - add an 'enumerate' to the phase ends constructor instead of strings.
-- add a 'begin second phase' after the first phase has ended message has ended.
 - make the offsets in the mp3s (for example in first phase ends in 5.4.3.) to
   the settigns file, as this might be different for different sounds.
 - Add the german language pack into the settings and make a 1 line languag eswitch!

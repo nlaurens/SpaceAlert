@@ -67,6 +67,9 @@ class Settings:
     sound['begin_second_phase'] = 'second_phase_begins.mp3'
     messg['begin_second_phase'] = 'Please begin second phase!'
 
+    sound['begin_third_phase'] = 'third_phase_begins.mp3'
+    messg['begin_third_phase'] = 'Please begin the third phase!'
+
     #Operation ends
     sound['operation_ends_in_1min'] = 'operation_ends_in_1_minute.mp3'
     messg['operation_ends_in_1min'] = 'Operation will ends in 1 minute!'

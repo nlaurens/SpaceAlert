@@ -138,6 +138,7 @@ class ducklingScriptParser():
                 if isinstance(eventItem, event.phaseEnds):
                     if eventItem.getPhaseNumber() == lastPhaseNumber:
                         eventItem.convertToEndMission()
+
         else:
             print 'ERROR, the last event is not a phase end!'
 
