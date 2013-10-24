@@ -1,4 +1,8 @@
 class Settings:
+    """
+    Class that contains all the variables to the mp3's and messages. Allows for easy swtchint between language's and fixing of typo's
+    """
+
     def __init__(self):
         pass
 
@@ -6,6 +10,12 @@ class Settings:
 
     sound = {}
     messg = {}
+
+    # Siren
+    sound['siren0'] = 'red_alert_0.mp3'
+    sound['siren1'] = 'red_alert_1.mp3'
+    sound['siren2'] = 'red_alert_2.mp3'
+    sound['siren3'] = 'red_alert_3.mp3'
 
     #Alerts
     sound['alert'] = 'alert.mp3'
@@ -56,6 +66,9 @@ class Settings:
 
     sound['begin_second_phase'] = 'second_phase_begins.mp3'
     messg['begin_second_phase'] = 'Please begin second phase!'
+
+    sound['begin_third_phase'] = 'third_phase_begins.mp3'
+    messg['begin_third_phase'] = 'Please begin the third phase!'
 
     #Operation ends
     sound['operation_ends_in_1min'] = 'operation_ends_in_1_minute.mp3'

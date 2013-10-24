@@ -5,6 +5,12 @@ from settings import Settings
 
 # Thread that handles the display of messages and the clock!
 def DisplayThread(displayQ, startTime, communicationQ):
+    """
+
+    @param displayQ:
+    @param startTime:
+    @param communicationQ:
+    """
     secondsPrinted = 0
     run = True
     while run:
@@ -33,9 +39,20 @@ def DisplayThread(displayQ, startTime, communicationQ):
 
 # Thread that handles the audioQueue and playback.
 def AudioThread(audioQ, communicationQ):
+    """
+
+    @param audioQ:
+    @param communicationQ:
+    """
     run = True
     while run:
-        time.sleep(.1)
+        # If there is no audio to play, we make some random noise
+        if len(audioQ) == 0:
+            siren = randomSiren()
+            siren.play()
+
+            while len(audioQ) == 0 and siren.isplaying():
+                time.sleep(.1)
 
         #Check if the audio queu needs processing
         if len(audioQ) > 0:
@@ -61,3 +78,25 @@ def AudioThread(audioQ, communicationQ):
             for msg in communicationQ:
                 if msg == 'AUDIO-STOP':
                     run = False
+
+def randomSiren():
+    """
+
+
+    @return:
+    """
+    from random import randint
+    rnd = randint(0,3)
+    if rnd == 0:
+        siren = mp3play.load(Settings.soundsDir + Settings.sound['siren1'])
+    elif rnd == 1:
+        siren = mp3play.load(Settings.soundsDir + Settings.sound['siren1'])
+    elif rnd == 2:
+        siren = mp3play.load(Settings.soundsDir + Settings.sound['siren2'])
+    elif rnd == 3:
+        siren = mp3play.load(Settings.soundsDir + Settings.sound['siren3'])
+    else:
+        print "Error in random int, it retrns: " + str(rnd)
+        exit()
+
+    return siren

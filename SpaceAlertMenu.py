@@ -1,6 +1,20 @@
 class SpaceAlertMenu():
 
+    """
+
+    @param missionList:
+    """
+
+    def __init__(self, missionList):
+        self.missionList = missionList
+
     def subMenu(self, menuItems, menuText):
+        """
+
+        @param menuItems:
+        @param menuText:
+        @return:
+        """
         i = 1
         for option in menuItems:
             menuText += str(i) + ") " + option + "\n"
@@ -20,23 +34,42 @@ class SpaceAlertMenu():
             self.noAction()
 
     def selectChapter(self):
+        """
+
+
+        @return:
+        """
         menuText = "Select a chapter to play:\n"
         menuOptions = self.missionList.getChapters()
         chapter = self.subMenu(menuOptions, menuText)
         return chapter
 
     def selectMission(self, chapter):
+        """
+
+        @param chapter:
+        @return:
+        """
         menuText = "Select a mission to play:\n"
         missions = self.missionList.getMissions(chapter)
         mission = self.subMenu(missions, menuText)
         return mission
 
-    def noAction(self):
+    @staticmethod
+    def noAction():
+        """
+
+
+        """
         print 'Say what Cadette?'
 
-    def main(self, missionList):
-        self.missionList = missionList
+    def main(self):
 
+        """
+
+
+        @return:
+        """
         mainMenuText = "\n Main Menu.\n (s)elect chapter\n (q)uit"
 
         while True:
@@ -46,12 +79,7 @@ class SpaceAlertMenu():
                 return None, None
             elif selection == "s":
                 chapter = self.selectChapter()
-                if chapter != None:
+                if chapter is not None:
                     mission = self.selectMission(chapter)
-                    if mission != None:
+                    if mission is not None:
                         return chapter, mission
-
-
-if __name__ == "__main__":
-    SA = SpaceAlertMenu()
-    print SA.main()

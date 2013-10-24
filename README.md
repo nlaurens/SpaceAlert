@@ -21,13 +21,11 @@ Rule book, missions, sounds available at:
   the real starttime of the event. Not on the time it starts playing (only
   happens when there are events spawning to close for the mp3 to finish playing)
 - add an 'enumerate' to the phase ends constructor instead of strings.
-- add a 'begin second phase' after the first phase has ended message has ended.
 - make the offsets in the mp3s (for example in first phase ends in 5.4.3.) to
   the settigns file, as this might be different for different sounds.
-- add ability to read from mission files
-- add menu to browse through the different mission files and select one to play
 - Add the german language pack into the settings and make a 1 line languag eswitch!
-- make it stop after a mission ends (or give an error if the event queue is empty).
+- Add a 'summary' of the mission that was just played with all the times and
+  events!
 - Make a build script that compiles the script to a windows binary.
 
 ##Scripted events format
