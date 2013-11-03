@@ -80,3 +80,15 @@ The 2.7 python reader for config files does not keep the order in the config
 file when parsing. Therefore the missions in each chapter are sorted by
 alphabetical order in the parser. It is thus highly recommended to keep a name
 convention such as "mission1", "missoin2" etc.
+
+
+#Buglist
+
+##1
+Mission 1-2 does not play. Check the script!
+
+##2
+Communications restored message is put on the audioq after the white-noise is
+done playing. However in a (badly) scripted mission, another event could go be
+put on the stack during the whitenoise, and as a result will be played first
+before the communications restored message is played.
