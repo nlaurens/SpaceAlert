@@ -84,8 +84,6 @@ convention such as "mission1", "missoin2" etc.
 
 #Buglist
 
-##1
-Mission 1-2 does not play. Check the script!
 
 ##2
 Communications restored message is put on the audioq after the white-noise is
