@@ -27,6 +27,7 @@ Rule book, missions, sounds available at:
 - Add a 'summary' of the mission that was just played with all the times and
   events!
 - Make a build script that compiles the script to a windows binary.
+- Add a diluted time option, which allows the game to be played at different speed.
 
 ##Scripted events format
  All events have the following format:
